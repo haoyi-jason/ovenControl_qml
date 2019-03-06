@@ -1,4 +1,4 @@
-QT += quick
+QT += quick serialport core sql
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -13,7 +13,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        main.cpp
+        main.cpp \
+    ovencontroller.cpp \
+    binparser.cpp \
+    cmdinterface.cpp
 
 RESOURCES += qml.qrc
 
@@ -27,3 +30,26 @@ QML_DESIGNER_IMPORT_PATH =
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+HEADERS += \
+    ovencontroller.h \
+    binparser.h \
+    cmdinterface.h
+
+DISTFILES += \
+    mainView.qml \
+    qml/Button.qml \
+    qml/LabelText.qml \
+    qml/RecepeView.qml \
+    qml/ButtonStart.qml \
+    qml/ButtonEco.qml \
+    qml/ButtonPower.qml \
+    qml/ManualBar.qml \
+    qml/LabelValue.qml \
+    qml/ButtonFan.qml \
+    qml/ButtonLight.qml \
+    qml/ButtonValve.qml \
+    qml/ButtonImage.qml \
+    qml/ImageText.qml \
+    qml/ImageEdit.qml \
+    qml/testPanel.qml

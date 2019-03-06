@@ -31,23 +31,23 @@ Button {
         onPaint: {
             var ctx = getContext("2d");
             ctx.reset();
-
             var centreX = width/2;
-            var centreY = height*0.7;
+            var centreY = height/2;
             var sz = height/2
 
             ctx.strokeStyle = pressed?"red":"blue";
             ctx.fillStyle = pressed?fillPressed:fillNormal;
             ctx.lineWidth = 3;
+
             ctx.beginPath();
+            ctx.moveTo(centreX*0.5,centreY*0.5);
+            ctx.lineTo(centreX*1.5,centreY*0.5);
+            //ctx.stroke();
+            ctx.moveTo(centreX*0.5,centreY*1.5);
+            ctx.lineTo(centreX*1.5,centreY*1.5);
+            //ctx.stroke();
             ctx.moveTo(centreX,centreY);
-            ctx.bezierCurveTo(centreX+20,centreY-20,centreX-20,centreY-20,centreX,centreY-40);
-            centreX = width/2*0.8;
-            ctx.moveTo(centreX,centreY);
-            ctx.bezierCurveTo(centreX+20,centreY-20,centreX-20,centreY-20,centreX,centreY-40);
-            centreX = width/2*1.2;
-            ctx.moveTo(centreX,centreY);
-            ctx.bezierCurveTo(centreX+20,centreY-20,centreX-20,centreY-20,centreX,centreY-40);
+            ctx.arc(centreX, centreY, width*0.1, 0, 2 * Math.PI);
             //ctx.closePath();
             ctx.stroke();
 

@@ -1,23 +1,26 @@
 import QtQuick 2.0
 
-Item {
+Rectangle {
     property string caption: "caption"
     property string content: "content"
-    height:160
+    //height:160
+    Row{
+        spacing: 20
     Text {
         id: label
-        x:10
-        y:10
-        height:80
+        //x:10
+        //y:10
+        //height:80
         font.pixelSize: 24
         text: qsTr(caption)
     }
     Text {
         id: txt
-        x:20
-        y:40
-        height:80
-        font.pixelSize: 36
+        //x:20
+        //y:40
+        //height:80
+        font.pixelSize: 60
         text: qsTr(content)
+    }
     }
 }

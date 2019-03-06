@@ -13,7 +13,7 @@ Rectangle {
             height: parent.height
             fillMode: Image.PreserveAspectFit
         }
-        Text {
+        TextInput {
             id: txt
             font.pixelSize: 48
             font.bold: true

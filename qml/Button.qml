@@ -14,7 +14,7 @@ Button {
                 color: "#00c0f5"
             }
         }
-        border.width:height * 0.05
+        border.width:height * 0.02
         border.color:"gray"
         radius:height / 5
     }

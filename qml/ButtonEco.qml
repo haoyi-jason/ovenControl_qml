@@ -23,24 +23,26 @@ Button {
         border.color:"gray"
         radius:height / 5
     }
+    Image {
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
+        id: name
+        source: "../icons/Steam.png"
+    }
     Canvas{
         id: cv
         property bool pressed: false
         anchors.fill: parent
-        Component.onCompleted: loadImage("../image/eco_01.jpg");
-        onImageLoaded: requestPaint();
         onPaint: {
             var ctx = getContext("2d");
             //ctx.reset();
             var centreX = width/2;
             var centreY = height/2;
-            ctx.clip();
-            if(cv.isImageLoaded("../image/eco_01.jpg")){
-                var im = ctx.createImageData("../image/eco_01.jpg");
-                //im.data[3] = 128;
-                ctx.drawImage(im,0,0);
-            }
-
+            ctx.moveTo(0,0);
+            ctx.fillStyle= cv.pressed?"red":"white";
+            ctx.font.pixelSize=36;
+            ctx.fillText("ECO",centreX,centreY);
+            ctx.stroke();
         }
         MouseArea{
             anchors.fill: parent
