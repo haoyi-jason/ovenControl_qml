@@ -5,6 +5,7 @@
 #include <QtCore>
 #include <QDebug>
 #include "binparser.h"
+using namespace std;
 
 class QSerialPort;
 
@@ -26,84 +27,128 @@ private:
     int m_value;
 };
 
-class recepe:public QObject{
-    Q_OBJECT
-    Q_PROPERTY(int uhTemp READ uhTemp WRITE setUhTemp NOTIFY uhTempChanged)
-    Q_PROPERTY(int lhTemp READ lhTemp WRITE setLhTemp NOTIFY lhTempChanged)
-    Q_PROPERTY(int bakeTime READ bakeTime WRITE setBakeTime NOTIFY bakeTimeChanged)
-    Q_PROPERTY(QString imgurl READ imgurl WRITE setImgurl NOTIFY imgurlChanged)
+class recepe{
+    Q_GADGET
+    Q_PROPERTY(int id READ id WRITE setId)
+    Q_PROPERTY(int uhTemp READ uhTemp WRITE setUhTemp  )
+    Q_PROPERTY(int lhTemp READ lhTemp WRITE setLhTemp  )
+    Q_PROPERTY(int bakeTime READ bakeTime WRITE setBakeTime  )
+    Q_PROPERTY(QString imgurl READ imgurl WRITE setImgurl  )
+    Q_PROPERTY(QString name READ name WRITE setName  )
+    Q_PROPERTY(int v1_on READ v1_on WRITE setV1_on  )
+    Q_PROPERTY(int v1_off READ v1_off WRITE setV1_on  )
+    Q_PROPERTY(int v2_on READ v2_on WRITE setV2_on  )
+    Q_PROPERTY(int v2_off READ v2_off WRITE setV2_off  )
+    Q_PROPERTY(int s1_time READ s1_time WRITE setS1_time  )
+    Q_PROPERTY(int s1_quantity READ s1_quantity WRITE setS1_quantity  )
+    Q_PROPERTY(int s2_time READ s2_time WRITE setS2_time  )
+    Q_PROPERTY(int s2_quantity READ s2_quantity WRITE setS2_quantity  )
 public:
-    explicit recepe(QObject *parent = nullptr){};
-
+    recepe(){}
     int uhTemp() const {return m_tempUh;}
     int lhTemp() const {return m_tempLh;}
     int bakeTime() const {return m_bakeTime;}
-    void setUhTemp(int v){m_tempUh = v;emit uhTempChanged();}
-    void setLhTemp(int v){m_tempLh = v;}
+    void setUhTemp(const int& v){m_tempUh = v; }
+    void setLhTemp(const int& v){m_tempLh = v;}
     void setBakeTime(int v){m_bakeTime = v;}
-    int steamCount(){return steamOp.size();}
-    int valveCount(){return valveOp.size();}
     QString imgurl() const{return m_imgurl;}
     void setImgurl(QString v){m_imgurl = v;}
+    QString name() const {return m_name;}
+    void setName(QString v){m_name = v;}
 
-    Q_INVOKABLE void addSteam(timeValue v){
-        steamOp.append(new timeValue(v.timeVal(),v.value()));
-    }
-    Q_INVOKABLE void setSteam(int id,timeValue v){
-        if(id < steamOp.size()){
-            steamOp.at(id)->setTime(v.timeVal());
-            steamOp.at(id)->setValue(v.value());
-        }
-    }
-    Q_INVOKABLE timeValue *getSteam(int id){
-        if(id < steamOp.size())
-            return steamOp.at(id);
-        return nullptr;
-    }
+    int v1_on() const{return m_valveOn[0];}
+    int v2_on() const{return m_valveOn[1];}
+    int v1_off() const{return m_valveOff[0];}
+    int v2_off() const{return m_valveOff[1];}
+    void setV1_on(int v){m_valveOn[0] = v;}
+    void setV2_on(int v){m_valveOn[1] = v;}
+    void setV1_off(int v){m_valveOff[0] = v;}
+    void setV2_off(int v){m_valveOff[1] = v;}
 
-    Q_INVOKABLE void addValve(timeValue v){
-        valveOp.append(new timeValue(v.timeVal(),v.value()));
-    }
-    Q_INVOKABLE void setValve(int id,timeValue v){
-        if(id < valveOp.size()){
-            valveOp.at(id)->setTime(v.timeVal());
-            valveOp.at(id)->setValue(v.value());
-        }
-}
-    Q_INVOKABLE timeValue *getValve(int id){
-        if(id < valveOp.size())
-            return valveOp.at(id);
-        return nullptr;
-    }
+    int s1_time() const{return m_steamOn[0];}
+    int s2_time() const{return m_steamOn[1];}
+    int s1_quantity() const{return m_steamQuantity[0];}
+    int s2_quantity() const{return m_steamQuantity[1];}
+    void setS1_time(int v){m_steamOn[0] = v;}
+    void setS2_time(int v){m_steamOn[1] = v;}
+    void setS1_quantity(int v){m_steamQuantity[0] = v;}
+    void setS2_quantity(int v){m_steamQuantity[1] = v;}
 
-Q_SIGNALS:
-    void uhTempChanged();
-    void lhTempChanged();
-    void bakeTimeChanged();
-    void imgurlChanged();
+    int id() const{return m_id;}
+    void setId(int v){m_id = v;}
 
 private:
 
     int m_tempUh;
     int m_tempLh;
     int m_bakeTime;
-    QList<timeValue*> steamOp;
-    QList<timeValue*> valveOp;
     QString m_imgurl;
+    QString m_name;
+
+    int m_valveOn[2];
+    int m_valveOff[2];
+    int m_steamOn[2];
+    int m_steamQuantity[2];
+    int m_id;
 
 };
-Q_DECLARE_METATYPE(recepe*)
+
+Q_DECLARE_METATYPE(recepe)
+
+struct ovenConfig{
+    Q_GADGET
+public:
+    int m_maxTemp, m_minTemp;
+    int m_sensorType;
+    int m_defaultRecepe;
+    int m_steamCountPerLitre,m_defaultSteamMl;
+    bool m_astEnSun,m_astEnMon,m_astEnTue,m_astEnWen,m_astEnThu,m_astEnFri,m_astEnSat;
+    QTime m_astSun,m_astMon,m_astTue,m_astWen,m_astThu,m_astFri,m_astSat;
+    int m_steamTempHi,m_steamTempLow;
+    Q_PROPERTY(int maxTemp MEMBER m_maxTemp)
+    Q_PROPERTY(int minTemp MEMBER m_minTemp)
+    Q_PROPERTY(int sensorType MEMBER m_sensorType)
+    Q_PROPERTY(int defaultRecepe MEMBER m_defaultRecepe)
+    Q_PROPERTY(int countPerLitre MEMBER m_steamCountPerLitre)
+    Q_PROPERTY(int defaultSteamMl MEMBER m_defaultSteamMl)
+    Q_PROPERTY(bool astEnMon MEMBER m_astEnMon)
+    Q_PROPERTY(bool astEnTue MEMBER m_astEnTue)
+    Q_PROPERTY(bool astEnWen MEMBER m_astEnWen)
+    Q_PROPERTY(bool astEnThu MEMBER m_astEnThu)
+    Q_PROPERTY(bool astEnFri MEMBER m_astEnFri)
+    Q_PROPERTY(bool astEnSat MEMBER m_astEnSat)
+    Q_PROPERTY(bool astEnSun MEMBER m_astEnSun)
+    Q_PROPERTY(QTime astMon MEMBER m_astMon)
+    Q_PROPERTY(QTime astTue MEMBER m_astTue)
+    Q_PROPERTY(QTime astWen MEMBER m_astWen)
+    Q_PROPERTY(QTime astThu MEMBER m_astThu)
+    Q_PROPERTY(QTime astFri MEMBER m_astFri)
+    Q_PROPERTY(QTime astSat MEMBER m_astSat)
+    Q_PROPERTY(QTime astSun MEMBER m_astSun)
+    Q_PROPERTY(int steamHigh MEMBER m_steamTempHi)
+    Q_PROPERTY(int steamLow MEMBER m_steamTempLow)
+};
+Q_DECLARE_METATYPE(ovenConfig)
 
 class ovenController : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QVariantMap ovenVars READ ovenVars WRITE setOvenVars NOTIFY ovenVarsChanged)
     Q_PROPERTY(QString runTime READ runTime  NOTIFY runTimeChanged)
     Q_PROPERTY(QString finishTime READ finishTime NOTIFY finishTimeChanged)
-//    Q_PROPERTY(QString temp_oh READ temp_oh NOTIFY temp_ohChanged)
-//    Q_PROPERTY(QString temp_oh READ temp_lh NOTIFY temp_lhChanged)
-//    Q_PROPERTY(QString temp_oh READ temp_st NOTIFY temp_stChanged)
+    Q_PROPERTY(qint16 temp_oh READ temp_oh NOTIFY temp_ohChanged)
+    Q_PROPERTY(qint16 temp_lh READ temp_lh NOTIFY temp_lhChanged)
+    Q_PROPERTY(qint16 temp_sh READ temp_sh NOTIFY temp_shChanged)
+    Q_PROPERTY(int activeR READ activeR WRITE setActiveR NOTIFY activeRChanged)
 
     Q_PROPERTY(QVariantMap activeRecepe READ activeRecepe WRITE setActiveRecepe NOTIFY activeRecepeChanged)
+    //Q_PROPERTY(QVariantMap recepeData READ recepeData WRITE setRecepeData NOTIFY recepeDataChanged)
+    Q_PROPERTY(QString rtc READ rtc NOTIFY rtcChanged)
+
+    Q_PROPERTY(QAbstractItemModel* recepeModel READ recepeModel)
+    Q_PROPERTY(recepe actRecepe READ actRecepe WRITE setActRecepe NOTIFY actRecepeChanged)
+    Q_PROPERTY(bool celius READ celius)
+    Q_PROPERTY(ovenConfig ovenCfg READ ovenCfg WRITE setOvenCfg NOTIFY ovenCfgChanged)
 public:
     enum oven_command_mask{
         MASK_CMD=0x80,
@@ -126,6 +171,7 @@ public:
         CMD2_SETUP_HEATER,
         CMD2_SETUP_STEAM,
         CMD2_SETUP_SENSOR,
+        CMD2_SETUP_READTEMP,
         CMD2_SETUP_SYSINFO,
         CMD2_CRITICAL_DEFAULT
     };
@@ -135,6 +181,7 @@ public:
         DATA_FAN,
         DATA_HEATER,
         DATA_STEAM,
+        DATA_SENSOR,
         DATA_TEMP,
         DATA_STATE=0x0e
     };
@@ -175,7 +222,42 @@ public:
     QString runTime() const {return m_remainTime;}
     QString finishTime() const {return m_finishTime;}
 
+    QVariantMap ovenVars();
+    void setOvenVars(QVariantMap v);
+    qint16 temp_oh() const {return m_temperature[0].pv;}
+    qint16 temp_lh() const {return m_temperature[1].pv;}
+    qint16 temp_sh() const {return m_temperature[2].pv;}
 
+    QString rtc() const{return QTime::currentTime().toString("HH:mm:ss");}
+
+    Q_INVOKABLE void nextRecepe();
+    Q_INVOKABLE void prevRecepe();
+
+    Q_INVOKABLE QVariant getOvenVarsByName(QString name);
+    Q_INVOKABLE void setOvenVarsByName(QString name , QVariant v);
+
+    Q_INVOKABLE QVariantMap recepeData(int id) const;
+    Q_INVOKABLE void setRecepeData(int id , QVariantMap v);
+    Q_INVOKABLE int recepeCount() const;
+
+    int activeR() const {return m_actRecepeid;}
+    void setActiveR(int id){m_actRecepeid = id;emit activeRChanged();}
+
+    QAbstractItemModel *recepeModel() const{
+
+        recepe r = qvariant_cast<recepe>(m_recepeModel->data(m_recepeModel->index(0,0),Qt::EditRole));
+        qDebug()<<"access model:"<<r.uhTemp();
+
+        return m_recepeModel;
+    }
+    Q_SLOT void addRecepe(const int &id, const int& uhTemp, const int& lhTemp, const int& stTemp,
+                          const int &baketime, const QString &name, const QString& imgurl, const int &s1_time, const int &s1_qty, const int &s2_time, const int &s2_qty, const int &v1_on, const int &v1_off, const int &v2_on, const int &v2_off);
+
+    recepe actRecepe() const{return *m_activeRecepe;}
+    void setActRecepe(recepe v){m_activeRecepe = &v;}
+    bool celius() const{return m_celius;}
+    ovenConfig ovenCfg() const{return m_ovenVar;}
+    void setOvenCfg(ovenConfig v){m_ovenVar = v;}
 signals:
     void updateTemperature(int id);
     void updateRelay(int id);
@@ -185,6 +267,14 @@ signals:
     void runTimeChanged();
     void finishTimeChanged();
     void activeRecepeChanged();
+    void ovenVarsChanged();
+    void temp_ohChanged();
+    void temp_lhChanged();
+    void temp_shChanged();
+    void rtcChanged();
+    void activeRChanged();
+    void actRecepeChanged();
+    void ovenCfgChanged();
 
 public slots:
     void resolvePacket(bool state, binPacket::cmd_header_t header, QByteArray b);
@@ -196,6 +286,7 @@ private slots:
 private:
     void loadParameter();
     void initDatabase();
+    void saveRecord(int id);
 
 private:
     bool m_running;
@@ -220,6 +311,11 @@ private:
     QList<recepe*> m_recepes;
     QString m_remainTime;
     QString m_finishTime;
+    int m_actRecepeid, m_currRecepeid;
+    int m_remainSeconds;
+    QAbstractItemModel *m_recepeModel;
+    bool m_celius;
+    ovenConfig m_ovenVar;
 };
 
 #endif // OVENCONTROLLER_H

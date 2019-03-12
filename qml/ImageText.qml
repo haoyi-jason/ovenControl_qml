@@ -8,9 +8,11 @@ Rectangle {
         height:parent.height
         Image {
             id:img
-            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
+            anchors.top:parent.top
             source:image
-            height: parent.height
+            width:62.5
+            height:62.5
             fillMode: Image.PreserveAspectFit
         }
         Text {
@@ -19,7 +21,7 @@ Rectangle {
             font.bold: true
             //height: parent.height
             color: "red"
-            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: img.right
             text: qsTr(content)
             Image {
                 id: name

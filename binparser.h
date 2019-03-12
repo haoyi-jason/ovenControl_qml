@@ -25,6 +25,11 @@ public:
     {
         //qDebug()<<"binparser:packet:construc";
     }
+    explicit binPacket(quint8 cmd, quint8 pid):
+        m_cmd(cmd),
+        m_pid(pid)
+    {
+    }
     explicit binPacket(){
 
     }
@@ -76,7 +81,8 @@ public:
             header.crc += m_data.at(i);
 
         p.append((char*)&header,8);
-        p.append(m_data);
+        if(m_data.size())
+            p.append(m_data);
         //qDebug()<<"binparser:packet:"<<p<<" sz="<<p.size();
         return p;
     }

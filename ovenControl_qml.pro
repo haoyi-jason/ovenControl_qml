@@ -52,4 +52,12 @@ DISTFILES += \
     qml/ButtonImage.qml \
     qml/ImageText.qml \
     qml/ImageEdit.qml \
-    qml/testPanel.qml
+    qml/testPanel.qml \
+    qml/TemperatureDisp.qml \
+    qml/TimeDisp.qml \
+    qml/RecepeViewV2.qml \
+    qml/RecepeViewV2.qml \
+    qml/RecepeViewS.qml \
+    parameter_edit.qml \
+    qml/RecepeEditor.qml \
+    qml/LabelText2.qml

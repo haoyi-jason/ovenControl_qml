@@ -21,6 +21,7 @@ Rectangle {
             color: "red"
             anchors.verticalCenter: parent.verticalCenter
             text: qsTr(content)
+            inputMethodHints: Qt.ImhDigitsOnly
             Image {
                 id: name
                 opacity: 0.2

@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QScreen>
 #include "ovencontroller.h"
 
 int main(int argc, char *argv[])
@@ -18,6 +19,10 @@ int main(int argc, char *argv[])
     engine.load(QUrl(QStringLiteral("mainView.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;
+
+    //QScreen *screen = QGuiApplication::primaryScreen();
+    //QGuiApplication::primaryScreen()->setOrientationUpdateMask(Qt::PortraitOrientation);
+
 
     return app.exec();
 }
